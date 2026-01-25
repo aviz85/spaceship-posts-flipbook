@@ -976,13 +976,13 @@ linktr.ee/aviz85
             $('#flipbook').turn('page', totalPages);
             updateUI(totalPages);
 
-            // For Hebrew reading: ← (left arrow) = next in reading = turn('next') = flip left page right
-            $('#prevBtn').on('click', function() {
-                $('#flipbook').turn('next');
+            // For Hebrew reading: left arrow button = next, right arrow button = back
+            $('#nextBtn').on('click', function() {
+                $('#flipbook').turn('next');  // Left arrow = forward
             });
 
-            $('#nextBtn').on('click', function() {
-                $('#flipbook').turn('previous');
+            $('#prevBtn').on('click', function() {
+                $('#flipbook').turn('previous');  // Right arrow = back
             });
 
             $(document).on('keydown', function(e) {
