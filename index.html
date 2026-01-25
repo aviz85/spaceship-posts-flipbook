@@ -593,8 +593,8 @@
 
     <!-- Keyboard Hint -->
     <div class="keyboard-hint">
-        <span><span class="key">←</span> הקודם</span>
         <span><span class="key">→</span> הבא</span>
+        <span><span class="key">←</span> הקודם</span>
     </div>
 
     <!-- Progress Bar -->
@@ -954,7 +954,6 @@ linktr.ee/aviz85
                 gradients: true,
                 elevation: 50,
                 duration: 1000,
-                direction: 'rtl',
                 when: {
                     turning: function(e, page, view) {
                         if (!isMuted) {
@@ -971,18 +970,18 @@ linktr.ee/aviz85
             updateUI(1);
 
             $('#prevBtn').on('click', function() {
-                $('#flipbook').turn('next');
+                $('#flipbook').turn('previous');
             });
 
             $('#nextBtn').on('click', function() {
-                $('#flipbook').turn('previous');
+                $('#flipbook').turn('next');
             });
 
             $(document).on('keydown', function(e) {
                 if (e.key === 'ArrowLeft') {
-                    $('#flipbook').turn('previous');
-                } else if (e.key === 'ArrowRight') {
                     $('#flipbook').turn('next');
+                } else if (e.key === 'ArrowRight') {
+                    $('#flipbook').turn('previous');
                 }
             });
 
