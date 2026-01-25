@@ -854,9 +854,6 @@
             </svg>
             מצב חללית 2026
         </div>
-        <div class="page-counter">
-            פוסט <span class="current" id="currentPost">1</span> מתוך 30
-        </div>
     </div>
 
     <!-- Book (Desktop) -->
@@ -894,27 +891,6 @@
     <div class="progress-bar">
         <div class="progress-fill" id="progressFill" style="width: 0%"></div>
     </div>
-
-    <!-- Audio Control -->
-    <div class="audio-control">
-        <button class="audio-btn" id="audioBtn">
-            <svg id="soundOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-            </svg>
-            <svg id="soundOff" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-                <line x1="23" y1="9" x2="17" y2="15"/>
-                <line x1="17" y1="9" x2="23" y2="15"/>
-            </svg>
-        </button>
-        <span class="audio-label">SOUND</span>
-    </div>
-
-    <!-- Page flip sound -->
-    <audio id="flipSound" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2617/2617-preview.mp3" type="audio/mpeg">
-    </audio>
 
     <script>
         const posts = [
@@ -1171,8 +1147,6 @@ linktr.ee/aviz85
 מי קופץ?`, hashtags: "#Workshop #SpaceshipMode #Claude" }
         ];
 
-        let isMuted = false;
-
         function generatePages() {
             const flipbook = $('#flipbook');
 
@@ -1314,12 +1288,6 @@ linktr.ee/aviz85
                 elevation: 50,
                 duration: 1000,
                 when: {
-                    turning: function(e, page, view) {
-                        if (!isMuted) {
-                            document.getElementById('flipSound').currentTime = 0;
-                            document.getElementById('flipSound').play().catch(() => {});
-                        }
-                    },
                     turned: function(e, page, view) {
                         updateUI(page);
                     }
@@ -1349,24 +1317,11 @@ linktr.ee/aviz85
             });
             } // End desktop-only block
 
-            $('#audioBtn').on('click', function() {
-                isMuted = !isMuted;
-                $(this).toggleClass('muted', isMuted);
-                $('#soundOn').toggle(!isMuted);
-                $('#soundOff').toggle(isMuted);
-            });
-
             createMatrixRain();
         });
 
         function updateUI(page) {
             const totalPages = $('#flipbook').turn('pages');
-
-            // Hebrew order: cover is last page, posts go backwards
-            // Post number = ceil((totalPages - page) / 2), clamped to 1-30
-            const postNum = Math.ceil((totalPages - page) / 2);
-            $('#currentPost').text(Math.max(1, Math.min(postNum, 30)));
-
             // Progress: 0% at cover (last page), 100% at back cover (page 1)
             const progress = ((totalPages - page) / (totalPages - 1)) * 100;
             $('#progressFill').css('width', progress + '%');
