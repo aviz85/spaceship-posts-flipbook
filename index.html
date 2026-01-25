@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 פוסטים על קלוד קוד | מצב חללית 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --bg-deep: #030303;
+            --bg: #0a0a0a;
+            --surface: #0d0d0d;
+            --surface-elevated: #111111;
+            --border: #1a1a1a;
+            --border-glow: #00ff4120;
+            --text: #e8e8e8;
+            --text-muted: #888;
+            --text-dim: #444;
+            --neon: #00ff41;
+            --neon-bright: #39ff6f;
+            --neon-dim: #00cc33;
+            --neon-glow: rgba(0, 255, 65, 0.4);
+            --neon-glow-soft: rgba(0, 255, 65, 0.15);
+            --neon-glow-intense: rgba(0, 255, 65, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Heebo', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Matrix Rain Background */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.06;
+            overflow: hidden;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: var(--neon);
+            text-shadow: 0 0 8px var(--neon);
+            animation: matrix-fall linear infinite;
+            white-space: nowrap;
+            writing-mode: vertical-rl;
+        }
+
+        @keyframes matrix-fall {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(calc(100vh + 100%)); }
+        }
+
+        /* Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.03) 2px,
+                rgba(0, 0, 0, 0.03) 4px
+            );
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(3,3,3,0.9), transparent);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--neon);
+            text-shadow: 0 0 20px var(--neon-glow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            animation: rocket-float 2s ease-in-out infinite;
+        }
+
+        @keyframes rocket-float {
+            0%, 100% { transform: translateY(0) rotate(-45deg); }
+            50% { transform: translateY(-3px) rotate(-45deg); }
+        }
+
+        .page-counter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+        }
+
+        .page-counter .current {
+            color: var(--neon);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Flipbook Container */
+        .flipbook-container {
+            position: relative;
+            z-index: 10;
+            perspective: 2000px;
+            width: 100%;
+            max-width: 900px;
+            height: 80vh;
+            max-height: 700px;
+        }
+
+        .flipbook {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            backface-visibility: hidden;
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            display: none;
+            flex-direction: column;
+        }
+
+        .page.active {
+            display: flex;
+            transform: rotateY(0deg);
+            z-index: 10;
+        }
+
+        .page.flipping {
+            transform: rotateY(-180deg);
+            z-index: 20;
+        }
+
+        .page.prev {
+            display: flex;
+            transform: rotateY(-180deg);
+            z-index: 5;
+        }
+
+        /* Page Content */
+        .page-header {
+            padding: 30px 40px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--neon);
+            text-shadow: 0 0 30px var(--neon-glow);
+            opacity: 0.3;
+        }
+
+        .page-platform {
+            font-size: 0.8rem;
+            padding: 6px 16px;
+            background: var(--neon-glow-soft);
+            border: 1px solid var(--neon-dim);
+            border-radius: 100px;
+            color: var(--neon);
+            font-weight: 600;
+        }
+
+        .page-body {
+            flex: 1;
+            display: flex;
+            padding: 30px 40px;
+            gap: 30px;
+            overflow: hidden;
+        }
+
+        .page-image {
+            flex: 0 0 40%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .page-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .page-text {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text);
+            overflow-y: auto;
+        }
+
+        .page-text strong {
+            color: var(--neon);
+        }
+
+        .page-hashtags {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--neon-dim);
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--neon);
+            border-color: var(--neon);
+            color: var(--black);
+            box-shadow: 0 0 30px var(--neon-glow);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:disabled:hover {
+            background: var(--surface);
+            border-color: var(--border);
+            color: var(--text);
+            box-shadow: none;
+        }
+
+        .nav-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--border);
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--neon);
+            box-shadow: 0 0 10px var(--neon-glow);
+            transition: width 0.3s ease;
+        }
+
+        /* Audio Control */
+        .audio-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            background: rgba(10, 10, 10, 0.9);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            backdrop-filter: blur(10px);
+        }
+
+        .audio-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--neon);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: var(--neon);
+            color: var(--black);
+        }
+
+        .audio-btn.muted {
+            color: var(--text-muted);
+        }
+
+        .audio-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* Cover Page */
+        .cover-page {
+            background: radial-gradient(ellipse at center, var(--surface) 0%, var(--bg-deep) 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .cover-year {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--neon);
+            text-shadow:
+                0 0 20px var(--neon-glow),
+                0 0 40px var(--neon-glow),
+                0 0 80px var(--neon-glow-soft);
+            animation: flicker 3s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.8; }
+            94% { opacity: 1; }
+        }
+
+        .cover-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .cover-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .cover-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: var(--neon-glow-soft);
+            border: 1px solid var(--neon);
+            border-radius: 100px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+            color: var(--neon);
+            letter-spacing: 2px;
+            animation: badge-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badge-pulse {
+            0%, 100% { box-shadow: 0 0 10px var(--neon-glow-soft); }
+            50% { box-shadow: 0 0 30px var(--neon-glow); }
+        }
+
+        .cover-cta {
+            margin-top: 50px;
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .cover-cta span {
+            color: var(--neon);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .flipbook-container {
+                height: 85vh;
+                max-height: none;
+            }
+
+            .page-body {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .page-image {
+                flex: 0 0 35%;
+            }
+
+            .page-text {
+                font-size: 0.95rem;
+            }
+
+            .cover-year {
+                font-size: 4rem;
+            }
+
+            .cover-title {
+                font-size: 1.5rem;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .nav-buttons {
+                bottom: 20px;
+            }
+
+            .nav-btn {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        /* Page flip animation glow */
+        .page.flipping::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 100%;
+            background: linear-gradient(to left, var(--neon-glow), transparent);
+            pointer-events: none;
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            display: flex;
+            gap: 20px;
+            z-index: 50;
+        }
+
+        .keyboard-hint span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .key {
+            padding: 4px 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <div class="matrix-rain" id="matrix"></div>
+
+    <!-- Scanlines -->
+    <div class="scanlines"></div>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <svg class="logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L4 14h5v8l8-12h-5V2z"/>
+            </svg>
+            מצב חללית 2026
+        </div>
+        <div class="page-counter">
+            <span class="current" id="currentPage">1</span> / 31
+        </div>
+    </div>
+
+    <!-- Flipbook -->
+    <div class="flipbook-container">
+        <div class="flipbook" id="flipbook">
+            <!-- Pages will be generated by JS -->
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-buttons">
+        <button class="nav-btn" id="prevBtn" disabled>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+            </svg>
+        </button>
+        <button class="nav-btn" id="nextBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Keyboard Hint -->
+    <div class="keyboard-hint">
+        <span><span class="key">→</span> הקודם</span>
+        <span><span class="key">←</span> הבא</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 3.2%"></div>
+    </div>
+
+    <!-- Audio Control -->
+    <div class="audio-control">
+        <button class="audio-btn" id="audioBtn">
+            <svg id="soundOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <svg id="soundOff" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <line x1="23" y1="9" x2="17" y2="15"/>
+                <line x1="17" y1="9" x2="23" y2="15"/>
+            </svg>
+        </button>
+        <span class="audio-label">SOUND</span>
+    </div>
+
+    <!-- Page flip sound -->
+    <audio id="flipSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2617/2617-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Posts data
+        const posts = [
+            {
+                title: "עידן הסוכנים",
+                platform: "Facebook",
+                image: "images/01-agent-era.jpg",
+                text: `עידן הסוכנים הגיע.
+
+לא, זה לא עוד באזוורד. זה לא עוד הייפ. זה קורה ממש עכשיו, ואני בפנים.
+
+מה ההבדל בין מה שהיה לפני חצי שנה למה שקורה היום? פשוט - <strong>הסוכנים סוף סוף עובדים</strong>. לא צריך להנדס להם כל תהליך, לא צריך לבנות workflows קשיחים, לא צריך לשבת שעות על אופטימיזציה.
+
+נותנים להם משימה והם רצים. נקודה.
+
+זה לא ChatGPT עם עוד פיצ'רים. זה משהו אחר לגמרי.`,
+                hashtags: "#ClaudeCode #AI #עידן_הסוכנים"
+            },
+            {
+                title: "לא רק לדבר - לפעול!",
+                platform: "Twitter/X",
+                image: "images/02-not-just-talk.jpg",
+                text: `סוכנים במילה אחת = <strong>יכולת פעולה</strong>.
+
+לא רק מילים יפות.
+לא רק תשובות חכמות.
+פעולה אמיתית.
+
+קורא קבצים. כותב קוד. שולח מיילים. קובע פגישות.
+
+זה ההבדל.`,
+                hashtags: "#AI #Agents"
+            },
+            {
+                title: "סקילים - הסוכן לומד",
+                platform: "Facebook",
+                image: "images/03-skills-learning.jpg",
+                text: `גיליתי משהו מטורף.
+
+במקום לכתוב פרומפט ארוך מאוד שמסביר לסוכן את כל העולם שלי - <strong>יש סקילים</strong>.
+
+סקיל = פרומפט ממוקד למשימה ספציפית.
+
+כשהסוכן צריך לקבוע פגישה ביומן? הוא טוען את סקיל היומן.
+כשהוא צריך לשלוח מייל? הוא טוען את סקיל המייל.
+
+והכי יפה? הוא יכול לעדכן את הסקילים של עצמו תוך כדי שיחה איתי.
+"עשית לא טוב? תתקן ותעדכן את הסקיל."
+
+זה כמו להכשיר עובד שבאמת זוכר מה לימדת אותו.`,
+                hashtags: "#AI #Skills #למידה_מתמשכת"
+            },
+            {
+                title: "מצב חללית",
+                platform: "LinkedIn",
+                image: "images/04-spaceship-mode.jpg",
+                text: `אני קורא לזה <strong>"מצב חללית"</strong>.
+
+יושב במרכז פיקוד ומנהל 10 סוכנים במקביל. כל אחד רץ על משימה אחרת. כל אחד מתקדם בפרויקט אחר.
+
+זה לא מדע בדיוני. זה יום עבודה רגיל עכשיו.
+
+סוכן אחד בונה אתר. סוכן שני מכין הצעת מחיר. סוכן שלישי עושה מחקר. סוכן רביעי מתעד.
+
+ואני? אני מנהל. נותן כיוון, מקבל תוצרים, ממשיך הלאה.
+
+לראשונה בחיים אני מרגיש שיש לי צוות אמיתי.`,
+                hashtags: "#SpaceshipMode #AI #ניהול"
+            },
+            {
+                title: "התייעלות אקספוננציאלית",
+                platform: "Facebook",
+                image: "images/05-exponential.jpg",
+                text: `<strong>התייעלות אקספוננציאלית.</strong>
+
+לא התייעלות של 10% או 20%. אקספוננציאלית.
+
+איך? כי כל סקיל שאני בונה הופך לבסיס לסקיל הבא. שכבה על שכבה על שכבה.
+
+שבוע ראשון - בניתי סקילים בסיסיים.
+שבוע שני - בניתי סקילים שמשתמשים בבסיסיים.
+שבוע שלישי - בניתי תהליכים שלמים.
+
+עכשיו אני יכול בבקשה אחת להפעיל מערכת שלמה שמורכבת מעשרות סקילים.
+
+זה לא ליניארי. זה מצטבר.`,
+                hashtags: "#ExponentialGrowth #AI"
+            },
+            {
+                title: "חצי אוטומט - הנקודה המתוקה",
+                platform: "Twitter/X",
+                image: "images/06-semi-auto.jpg",
+                text: `Sweet spot של עבודה עם סוכנים:
+
+לא ידני מדי (אתה עדיין עובד)
+לא אוטונומי מדי (אתה מאבד שליטה)
+
+<strong>חצי אוטומט.</strong>
+
+שולח משימה → הולך לעשות משהו אחר → חוזר אחרי חצי שעה → ממשיך.
+
+Human in the loop, אבל מנהל - לא מבצע.`,
+                hashtags: "#AI #Productivity"
+            },
+            {
+                title: "קשב - יתרון לא חסרון",
+                platform: "Facebook",
+                image: "images/07-adhd-superpower.jpg",
+                text: `יש לי הפרעות קשב.
+
+כל החיים זה היה חסרון. רעיונות מתפוצצים בראש כל הזמן, קשה להתרכז במשימה אחת, קופץ בין נושאים.
+
+<strong>עם סוכנים? זה הפך ליתרון מטורף.</strong>
+
+כל התנוצצות רעיונית - במקום להסיח אותי - אני זורק אותה לסוכן חדש. בום, עוד פרויקט מתקדם ברקע.
+
+הפיזור שלי הפך לסופר פאוור.
+
+לראשונה בחיים אני מרגיש שהמערכת עובדת בשבילי, לא נגדי.`,
+                hashtags: "#ADHD #AI #סופר_פאוור"
+            },
+            {
+                title: "סגר ושכח",
+                platform: "LinkedIn",
+                image: "images/08-fire-forget.jpg",
+                text: `<strong>Fire and forget.</strong>
+
+נותן לסוכן משימה. סוגר. שוכח.
+
+חוזר אחרי שעה - המשימה בוצעה.
+
+זה לא קסם. זה לא הבטחה שיווקית. זה מה שקורה אצלי כל יום.
+
+הסוד? לבנות את הסקילים נכון. לתת לסוכן את המידע שהוא צריך. לא לבקש ממנו דברים בלתי אפשריים.
+
+וכשזה עובד - זה פשוט עובד.`,
+                hashtags: "#Delegation #AI #Productivity"
+            },
+            {
+                title: "מנהל, לא מבצע",
+                platform: "Twitter/X",
+                image: "images/09-manager-not-worker.jpg",
+                text: `<strong>הפכתי למנהל צוותי סוכנים.</strong>
+
+מעולם לא הצלחתי לנהל עובדים אנושיים. כמה נסיונות כושלים שתו לי את המשאבים.
+
+עם סוכנים? זה פשוט עובד.
+
+אני נותן כיוון. הם מבצעים.
+אני בודק תוצאות. הם מתקנים.
+אני מחליט. הם עושים.
+
+סוף סוף אני מנהל.`,
+                hashtags: "#Management #AI"
+            },
+            {
+                title: "אבטחה ראשית",
+                platform: "Facebook",
+                image: "images/10-security-shield.jpg",
+                text: `"אבל מה עם האבטחה?"
+
+שאלה לגיטימית. הנה התשובות:
+
+1️⃣ אפשר לכבות אימון על הנתונים שלך בהגדרות
+2️⃣ אפשר לעבוד דרך AWS Bedrock ברשת פרטית
+3️⃣ בקרוב - מודלים מקומיים שלא יוצאים לאינטרנט בכלל
+
+וגם - הסיכוי שמידע ספציפי שלך "ידלוף" דרך המודל הוא אפסי.
+
+<strong>אבטחה חשובה. יש פתרונות.</strong>`,
+                hashtags: "#Security #AI #Privacy"
+            },
+            {
+                title: "הזרקת פרומפט - האיום הנסתר",
+                platform: "LinkedIn",
+                image: "images/11-prompt-injection.jpg",
+                text: `הסכנה האמיתית שאף אחד לא מדבר עליה: <strong>Prompt Injection</strong>.
+
+מישהו מבחוץ משתיל הוראות בתוך מסמך שהסוכן קורא. פתאום הסוכן עושה משהו שלא ביקשתם.
+
+הפתרון?
+- לשים לב מאיפה הסוכן קורא מידע
+- להגביל גישה לאתרים מסוימים
+- לא להוריד תיקיות לא מוכרות
+- לעבוד במצב חצי אוטומט - תמיד עם עין על מה שקורה
+
+זו האבטחה החשובה באמת.`,
+                hashtags: "#Security #PromptInjection #AI"
+            },
+            {
+                title: "הכל במקום אחד",
+                platform: "Twitter/X",
+                image: "images/12-local-data.jpg",
+                text: `<strong>הכל על המחשב שלי.</strong>
+
+לקוחות. הקלטות. מסמכים. תבניות. קוד.
+
+הסוכן יכול לגשת לכל דבר. לחבר בין דברים. ליצור קשרים חדשים.
+
+"תכין הצעת מחיר ללקוח החדש על סמך ההקלטה וההצעות הקודמות" - משפט אחד שמחבר שלושה תחומים.
+
+ריכוז = כוח.`,
+                hashtags: "#LocalFirst #AI"
+            },
+            {
+                title: "פרויקט = תיקייה",
+                platform: "Facebook",
+                image: "images/13-folder-project.jpg",
+                text: `הכלל הפשוט ביותר: <strong>פרויקט = תיקייה</strong>.
+
+כל פרויקט שלי הוא תיקייה במחשב. הסוכן נכנס לתיקייה ויודע מה קורה שם.
+
+יש תיקיית לקוחות. תיקיית פרויקטים. תיקיית ניהול משימות.
+
+כל תיקייה = עולם שלם שהסוכן מבין.
+
+פשוט. יעיל. עובד.`,
+                hashtags: "#Organization #AI"
+            },
+            {
+                title: "מכשיר עובד - בשיחה",
+                platform: "LinkedIn",
+                image: "images/14-training-agent.jpg",
+                text: `איך מכשירים סוכן AI?
+
+בדיוק כמו שמכשירים עובד חדש - <strong>בשיחה</strong>.
+
+"תעשה ככה"
+"לא, לא ככה, יותר ככה"
+"מצוין! עכשיו תזכור את זה לפעם הבאה"
+
+רק שבניגוד לעובד אנושי - הסוכן באמת זוכר. הוא מעדכן את עצמו. הוא לא ישכח מחר.
+
+ואם הוא כן טועה שוב? פשוט מתקנים שוב. עד שנקלט.`,
+                hashtags: "#Training #AI #Learning"
+            },
+            {
+                title: "המוח בענן - הגוף אצלך",
+                platform: "Twitter/X",
+                image: "images/15-brain-cloud.jpg",
+                text: `קלוד קוד = סוכן על המחשב שלך.
+קלוד = המוח בענן.
+
+הסוכן רץ אצלך. יש לו גישה לקבצים שלך. לכלים שלך.
+
+<strong>המוח - המודל החכם - יושב בשרתים של Anthropic</strong> (או AWS, או Google).
+
+התקשורת מוצפנת. המוח לא נגיש לאף אחד אחר.
+
+הכי טוב משני העולמות.`,
+                hashtags: "#Architecture #AI"
+            },
+            {
+                title: "יותר גדול מצ'אט GPT",
+                platform: "Facebook",
+                image: "images/16-chatgpt-revolution.jpg",
+                text: `אני אגיד משהו שאולי יישמע מוגזם:
+
+<strong>זה יותר גדול מהמהפכה של ChatGPT.</strong>
+
+ChatGPT שינה איך אנחנו מתקשרים עם מחשבים.
+סוכנים משנים איך מחשבים עובדים בשבילנו.
+
+זה לא עוד צ'אט יותר חכם. זה עובד שיכול לבצע. זה צוות שאפשר לנהל. זה מערכת שבונה את עצמה.
+
+אני יודע שזה נשמע הייפ. אני מבטיח לכם שזה לא.`,
+                hashtags: "#AIRevolution #Future"
+            },
+            {
+                title: "10 סוכנים במקביל",
+                platform: "LinkedIn",
+                image: "images/17-10-agents.jpg",
+                text: `<strong>בוקר טיפוסי:</strong>
+
+סוכן 1 - מכין סיכום פגישות אתמול
+סוכן 2 - כותב פוסט לרשתות
+סוכן 3 - מתעד פרויקט שעבדתי עליו
+סוכן 4 - עורך הצעת מחיר
+סוכן 5 - חוקר נושא חדש
+סוכן 6 - מארגן לי את המשימות
+סוכן 7 - בונה דף נחיתה
+סוכן 8 - מכין מצגת
+סוכן 9 - עונה על מיילים דחופים
+סוכן 10 - מתעד את עצמו
+
+ואני? שותה קפה ומנהל.`,
+                hashtags: "#Productivity #AI #SpaceshipMode"
+            },
+            {
+                title: "מחלקות חדשות בעסק",
+                platform: "Twitter/X",
+                image: "images/18-new-departments.jpg",
+                text: `העסק שלי פתאום יש לו מחלקות.
+
+<strong>מחלקת תיעוד. מחלקת שיווק. מחלקת מחקר.</strong>
+
+לא העסקתי אף אחד. פשוט בניתי סוכנים.
+
+כל "מחלקה" = סקיל מורכב שיודע לעשות תחום שלם.
+
+עסק עצמאי שמרגיש כמו חברה.`,
+                hashtags: "#Startup #AI"
+            },
+            {
+                title: "הכל קורה בשיחה",
+                platform: "Facebook",
+                image: "images/19-conversation-magic.jpg",
+                text: `<strong>הכל קורה בשיחה.</strong>
+
+לא צריך להיכנס להגדרות. לא צריך לשנות קוד. לא צריך לפתוח ממשקים מסובכים.
+
+פשוט מדברים עם הסוכן.
+
+"תעשה לי סקיל חדש שיודע לנהל את הבלוג"
+"תעדכן את הסקיל של המיילים שיוסיף חתימה"
+"תחבר את הסקיל הזה לסקיל ההוא"
+
+הוא עושה. אני רואה. הכל שקוף.
+
+זו הדרך שעבודה צריכה להיות.`,
+                hashtags: "#Conversational #AI"
+            },
+            {
+                title: "בונה סיסטם מתייעל",
+                platform: "LinkedIn",
+                image: "images/20-pyramid-system.jpg",
+                text: `לא סתם משתמש בכלי AI.
+
+<strong>בונה סיסטם מתייעל.</strong>
+
+שכבה על שכבה. סקיל על סקיל. יכולת על יכולת.
+
+כמו פירמידה - הבסיס יציב, וכל שכבה מאפשרת את הבאה.
+
+זה לא קורה ביום. זה תהליך. אבל התוצאה? מערכת שמשתפרת כל הזמן.
+
+קלוד קוד לראשונה מאפשר לבנות כזה דבר - באופן אינטואיטיבי, שיחתי, בלי הנדסה מורכבת.`,
+                hashtags: "#Systems #AI #Building"
+            },
+            {
+                title: "בואו לסדנה!",
+                platform: "Facebook",
+                image: "images/21-workshop-invite.jpg",
+                text: `<strong>מי רוצה להיכנס למצב חללית?</strong>
+
+יש לי סדנה שמלמדת בדיוק את זה. איך עובדים עם קלוד קוד. איך בונים סקילים. איך מנהלים סוכנים במקביל.
+
+📹 הקלטה במאה שקל.
+☎️ שעת ייעוץ ב-700 + מע"מ.
+🚀 תהליך של 3 שעות עם ליווי מלא - לדבר איתי.
+
+המטרה? שתגיעו למצב חללית בעסק שלכם תוך זמן קצר.`,
+                hashtags: "#Workshop #AI #SpaceshipMode"
+            },
+            {
+                title: "Workflows? עבר.",
+                platform: "Twitter/X",
+                image: "images/22-workflows-dead.jpg",
+                text: `Workflows קשיחים? 2024 מתקשר, רוצה את הטכנולוגיה שלו בחזרה.
+
+<strong>סוכנים אמיתיים לא צריכים תרשימי זרימה.</strong>
+הם מבינים את המשימה.
+הם מחליטים איך לפתור.
+הם מתאימים את עצמם.
+
+גמישות במקום קשיחות.
+אינטליגנציה במקום הנדסה.`,
+                hashtags: "#NoWorkflows #AI"
+            },
+            {
+                title: "קלוד אופוס 4.5 - המוח הכי חזק",
+                platform: "LinkedIn",
+                image: "images/23-opus-brain.jpg",
+                text: `למה דווקא קלוד קוד?
+
+כי מאחורי הקלעים יש את <strong>קלוד אופוס 4.5</strong> - המודל הכי חזק שאנטרופיק ייצרו.
+
+לא רק חכם. מאומן להיות סוכן.
+
+יש לו נטיות נכונות:
+- לבדוק לפני שהוא עושה
+- לשאול אם משהו לא ברור
+- לתעד אחרי שסיים
+- לנסות שוב אם נכשל
+
+זה לא רק מוח חזק. זה מוח שיודע לעבוד.`,
+                hashtags: "#Claude #AI #Anthropic"
+            },
+            {
+                title: "משפט אחד - מערכת שלמה",
+                platform: "Twitter/X",
+                image: "images/24-one-sentence.jpg",
+                text: `<strong>משפט אחד:</strong>
+
+"תכין את הלקוח החדש - CRM, פרויקט, הצעת מחיר, ותקבע פגישת המשך"
+
+מה שקורה מאחורי הקלעים:
+- קריאת הקלטת הפגישה
+- יצירת כרטיס לקוח
+- פתיחת תיקיית פרויקט
+- הכנת הצעת מחיר
+- שליחת מייל
+- קביעת פגישה ביומן
+
+משפט אחד. מערכת שלמה.`,
+                hashtags: "#Automation #AI"
+            },
+            {
+                title: "העתיד כבר כאן",
+                platform: "Facebook",
+                image: "images/25-future-now.jpg",
+                text: `<strong>אני חי את העתיד עכשיו.</strong>
+
+לא מדבר על מה יהיה בעוד 5 שנים.
+לא מדבר על הבטחות של חברות טכנולוגיה.
+מדבר על מה שקורה אצלי על המחשב היום.
+
+צוות סוכנים שעובד בשבילי.
+מערכת שמשתפרת כל יום.
+עסק שגדל בלי שאני עובד יותר.
+
+מי שלא מתחיל עכשיו - מפספס.`,
+                hashtags: "#Future #AI #Now"
+            },
+            {
+                title: "3 שעות - מצב חללית מלא",
+                platform: "LinkedIn",
+                image: "images/26-three-hours.jpg",
+                text: `<strong>ההבטחה שלי: תוך 3 שעות תהיו במצב חללית.</strong>
+
+לא בעוד חודש. לא אחרי קורס ארוך. 3 שעות של ליווי אישי.
+
+מה נעשה?
+- נבין מה העסק שלכם צריך
+- נבנה את הסקילים הראשונים
+- נחבר את הכלים החשובים
+- נתחיל לנהל סוכנים
+
+אחרי 3 שעות - תדעו לעשות את זה לבד.`,
+                hashtags: "#Consulting #AI #SpaceshipMode"
+            },
+            {
+                title: "בלי לכתוב שורת קוד",
+                platform: "Twitter/X",
+                image: "images/27-no-code.jpg",
+                text: `"אבל אני לא יודע לתכנת"
+
+<strong>לא צריך.</strong>
+
+קלוד קוד עושה את התכנות. אתה עושה את החשיבה.
+
+כל מה שאתה צריך לדעת:
+- מה אתה רוצה להשיג
+- איך לתאר את זה במילים
+- מתי לומר "לא ככה, יותר ככה"
+
+זהו. הסוכן עושה את השאר.`,
+                hashtags: "#NoCode #AI"
+            },
+            {
+                title: "לפני ואחרי הסוכנים",
+                platform: "Facebook",
+                image: "images/28-before-after.jpg",
+                text: `<strong>לפני:</strong>
+- טובע במשימות
+- מפספס דדליינים
+- רעיונות נשארים רעיונות
+- עסק שלא גדל
+
+<strong>אחרי:</strong>
+- משימות רצות ברקע
+- כל דבר מגיע בזמן
+- רעיונות הופכים לפרויקטים
+- עסק שצומח כל שבוע
+
+זה לא קסם. זה סוכנים.`,
+                hashtags: "#Transformation #AI #Before #After"
+            },
+            {
+                title: "נרגע בזמן שהם עובדים",
+                platform: "LinkedIn",
+                image: "images/29-relax-work.jpg",
+                text: `הסוד האמיתי של מצב חללית?
+
+<strong>אני נרגע בזמן שהם עובדים.</strong>
+
+שותה קפה. הסוכנים עובדים.
+יוצא להפסקה. הסוכנים עובדים.
+קורא מאמר. הסוכנים עובדים.
+
+זה לא עצלנות. זה ניהול.
+
+ברגע שאתה מבין שאתה מנהל ולא מבצע - הכל משתנה.`,
+                hashtags: "#WorkLifeBalance #AI #Management"
+            },
+            {
+                title: "מוכנים להמריא?",
+                platform: "Facebook",
+                image: "images/30-call-to-action.jpg",
+                text: `<strong>מוכנים להמריא?</strong>
+
+הסדנה שלי מלמדת בדיוק איך להגיע למצב חללית.
+
+📹 הקלטת הסדנה - 100 ש"ח
+☎️ שעת ייעוץ אישי - 700 + מע"מ
+🚀 תהליך 3 שעות עם ליווי - דברו איתי
+
+הקישור לכל המידע: linktr.ee/aviz85
+
+מי קופץ?`,
+                hashtags: "#Workshop #AI #SpaceshipMode #Claude"
+            }
+        ];
+
+        // State
+        let currentPage = 0;
+        const totalPages = posts.length + 1; // +1 for cover
+        let isMuted = false;
+
+        // Elements
+        const flipbook = document.getElementById('flipbook');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentPageEl = document.getElementById('currentPage');
+        const progressFill = document.getElementById('progressFill');
+        const flipSound = document.getElementById('flipSound');
+        const audioBtn = document.getElementById('audioBtn');
+        const soundOn = document.getElementById('soundOn');
+        const soundOff = document.getElementById('soundOff');
+
+        // Generate pages
+        function generatePages() {
+            // Cover page
+            const cover = document.createElement('div');
+            cover.className = 'page cover-page active';
+            cover.innerHTML = `
+                <div class="cover-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L4 14h5v8l8-12h-5V2z"/>
+                    </svg>
+                    מצב חללית מופעל
+                </div>
+                <div class="cover-year">2026</div>
+                <div class="cover-title">30 פוסטים על קלוד קוד</div>
+                <div class="cover-subtitle">מדריך מלא לעידן הסוכנים</div>
+                <div class="cover-cta">לחץ <span>←</span> להתחיל</div>
+            `;
+            flipbook.appendChild(cover);
+
+            // Post pages
+            posts.forEach((post, i) => {
+                const page = document.createElement('div');
+                page.className = 'page';
+                page.innerHTML = `
+                    <div class="page-header">
+                        <span class="page-number">${String(i + 1).padStart(2, '0')}</span>
+                        <span class="page-platform">${post.platform}</span>
+                    </div>
+                    <div class="page-body">
+                        <div class="page-image">
+                            <img src="${post.image}" alt="${post.title}" loading="lazy">
+                        </div>
+                        <div class="page-text">
+                            ${post.text}
+                            <div class="page-hashtags">${post.hashtags}</div>
+                        </div>
+                    </div>
+                `;
+                flipbook.appendChild(page);
+            });
+        }
+
+        // Navigate
+        function goToPage(index) {
+            const pages = document.querySelectorAll('.page');
+
+            if (index < 0 || index >= totalPages) return;
+
+            // Play sound
+            if (!isMuted) {
+                flipSound.currentTime = 0;
+                flipSound.play().catch(() => {});
+            }
+
+            // Update classes
+            pages.forEach((page, i) => {
+                page.classList.remove('active', 'flipping', 'prev');
+                if (i === index) {
+                    page.classList.add('active');
+                } else if (i === currentPage && index > currentPage) {
+                    page.classList.add('flipping');
+                    setTimeout(() => page.classList.remove('flipping'), 800);
+                } else if (i < index) {
+                    page.classList.add('prev');
+                }
+            });
+
+            currentPage = index;
+
+            // Update UI
+            currentPageEl.textContent = currentPage + 1;
+            progressFill.style.width = ((currentPage + 1) / totalPages * 100) + '%';
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+        }
+
+        function nextPage() {
+            goToPage(currentPage + 1);
+        }
+
+        function prevPage() {
+            goToPage(currentPage - 1);
+        }
+
+        // Event listeners
+        prevBtn.addEventListener('click', prevPage);
+        nextBtn.addEventListener('click', nextPage);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') nextPage();
+            if (e.key === 'ArrowRight') prevPage();
+        });
+
+        // Touch/swipe
+        let touchStartX = 0;
+        flipbook.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+        flipbook.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) nextPage();
+                else prevPage();
+            }
+        });
+
+        // Audio toggle
+        audioBtn.addEventListener('click', () => {
+            isMuted = !isMuted;
+            audioBtn.classList.toggle('muted', isMuted);
+            soundOn.style.display = isMuted ? 'none' : 'block';
+            soundOff.style.display = isMuted ? 'block' : 'none';
+        });
+
+        // Matrix rain
+        function createMatrixRain() {
+            const container = document.getElementById('matrix');
+            const chars = 'אבגדהוזחטיכלמנסעפצקרשת0123456789ABCDEF';
+            const columnCount = Math.floor(window.innerWidth / 30);
+
+            for (let i = 0; i < columnCount; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = (i * 30) + 'px';
+                column.style.animationDuration = (10 + Math.random() * 15) + 's';
+                column.style.animationDelay = (Math.random() * 10) + 's';
+
+                let text = '';
+                const length = 10 + Math.floor(Math.random() * 15);
+                for (let j = 0; j < length; j++) {
+                    text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+                }
+                column.textContent = text;
+                container.appendChild(column);
+            }
+        }
+
+        // Init
+        generatePages();
+        createMatrixRain();
+    </script>
+</body>
+</html>
