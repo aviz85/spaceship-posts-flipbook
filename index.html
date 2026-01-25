@@ -368,6 +368,28 @@
             font-style: italic;
         }
 
+        .back-cta {
+            margin-bottom: 25px;
+        }
+
+        .back-cta .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: var(--neon);
+            color: #000;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 0 25px var(--neon-glow);
+            transition: all 0.3s ease;
+        }
+
+        .back-cta .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px var(--neon-glow);
+        }
+
         /* Navigation */
         .nav-buttons {
             position: fixed;
@@ -1155,6 +1177,9 @@ linktr.ee/aviz85
             flipbook.append(`
                 <div class="page back-cover">
                     <div class="back-logo">AVIZ</div>
+                    <div class="back-cta">
+                        <a href="https://form.aviz.pro" target="_blank" class="cta-button">רוצה להתקדם? מלא טופס →</a>
+                    </div>
                     <div class="back-link">
                         <a href="https://linktr.ee/aviz85" target="_blank">linktr.ee/aviz85</a>
                     </div>
@@ -1256,6 +1281,9 @@ linktr.ee/aviz85
             container.append(`
                 <div class="mobile-cover">
                     <div class="back-logo" style="font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; color: var(--neon); text-shadow: 0 0 30px var(--neon-glow); margin-bottom: 25px;">AVIZ</div>
+                    <div class="back-cta" style="margin-bottom: 25px;">
+                        <a href="https://form.aviz.pro" target="_blank" style="display: inline-block; padding: 15px 30px; background: var(--neon); color: #000; font-weight: 700; font-size: 1.1rem; text-decoration: none; border-radius: 8px; box-shadow: 0 0 20px var(--neon-glow);">רוצה להתקדם? מלא טופס →</a>
+                    </div>
                     <div class="back-link" style="font-size: 1.2rem; margin-bottom: 15px;">
                         <a href="https://linktr.ee/aviz85" target="_blank" style="color: var(--neon); text-decoration: none;">linktr.ee/aviz85</a>
                     </div>
