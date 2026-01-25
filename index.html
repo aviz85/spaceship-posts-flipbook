@@ -579,22 +579,22 @@
 
     <!-- Navigation -->
     <div class="nav-buttons">
-        <button class="nav-btn" id="nextBtn" title="הבא">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 18l6-6-6-6"/>
-            </svg>
-        </button>
         <button class="nav-btn" id="prevBtn" title="הקודם">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M15 18l-6-6 6-6"/>
+            </svg>
+        </button>
+        <button class="nav-btn" id="nextBtn" title="הבא">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
             </svg>
         </button>
     </div>
 
     <!-- Keyboard Hint -->
     <div class="keyboard-hint">
-        <span><span class="key">←</span> הבא</span>
-        <span><span class="key">→</span> הקודם</span>
+        <span><span class="key">←</span> הקודם</span>
+        <span><span class="key">→</span> הבא</span>
     </div>
 
     <!-- Progress Bar -->
@@ -941,7 +941,7 @@ linktr.ee/aviz85
                     <div class="cover-year">2026</div>
                     <div class="cover-title">30 פוסטים על קלוד קוד</div>
                     <div class="cover-subtitle">מדריך מלא לעידן הסוכנים</div>
-                    <div class="cover-cta">לחץ <span>←</span> להתחיל</div>
+                    <div class="cover-cta">לחץ <span>→</span> להתחיל</div>
                 </div>
             `);
         }
@@ -986,10 +986,10 @@ linktr.ee/aviz85
             });
 
             $(document).on('keydown', function(e) {
-                if (e.key === 'ArrowLeft') {
-                    $('#flipbook').turn('next');  // Hebrew next = flip left page right
-                } else if (e.key === 'ArrowRight') {
-                    $('#flipbook').turn('previous');  // Hebrew back = flip right page left
+                if (e.key === 'ArrowRight') {
+                    $('#flipbook').turn('next');  // Right arrow = forward
+                } else if (e.key === 'ArrowLeft') {
+                    $('#flipbook').turn('previous');  // Left arrow = back
                 }
             });
 
