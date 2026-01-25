@@ -593,8 +593,8 @@
 
     <!-- Keyboard Hint -->
     <div class="keyboard-hint">
-        <span><span class="key">→</span> הבא</span>
-        <span><span class="key">←</span> הקודם</span>
+        <span><span class="key">←</span> הבא</span>
+        <span><span class="key">→</span> הקודם</span>
     </div>
 
     <!-- Progress Bar -->
@@ -883,50 +883,8 @@ linktr.ee/aviz85
         function generatePages() {
             const flipbook = $('#flipbook');
 
-            // Cover page
-            flipbook.append(`
-                <div class="page cover-page">
-                    <div class="cover-badge">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2L4 14h5v8l8-12h-5V2z"/>
-                        </svg>
-                        מצב חללית מופעל
-                    </div>
-                    <div class="cover-year">2026</div>
-                    <div class="cover-title">30 פוסטים על קלוד קוד</div>
-                    <div class="cover-subtitle">מדריך מלא לעידן הסוכנים</div>
-                    <div class="cover-cta">לחץ <span>→</span> להתחיל</div>
-                </div>
-            `);
-
-            // Content pages - each post = 2 pages (text on left, image on right)
-            posts.forEach((post, i) => {
-                // Text page (will appear on LEFT side)
-                flipbook.append(`
-                    <div class="page">
-                        <div class="page-text-full">
-                            <div class="post-title">${post.title}</div>
-                            <div class="post-content">
-                                ${post.text.replace(/\n/g, '<br>')}
-                            </div>
-                            <div class="post-hashtags">${post.hashtags}</div>
-                        </div>
-                    </div>
-                `);
-
-                // Image page (will appear on RIGHT side)
-                flipbook.append(`
-                    <div class="page">
-                        <div class="page-image-full">
-                            <img src="${post.image}" alt="${post.title}" loading="lazy">
-                            <div class="page-number-overlay">${String(i + 1).padStart(2, '0')}</div>
-                            <div class="platform-badge">${post.platform}</div>
-                        </div>
-                    </div>
-                `);
-            });
-
-            // Back cover
+            // For Hebrew book: generate in REVERSE order, start viewing from last page
+            // Back cover first (will be Turn.js page 1, but we start from last)
             flipbook.append(`
                 <div class="page back-cover">
                     <div class="back-logo">AVIZ</div>
@@ -938,6 +896,52 @@ linktr.ee/aviz85
                         avizmaeir@gmail.com
                     </div>
                     <div class="back-tagline">"הסוכנים עובדים. אני מנהל."</div>
+                </div>
+            `);
+
+            // Posts in REVERSE order (30 to 1)
+            // In each spread: image on LEFT, text on RIGHT (Hebrew reading)
+            for (let i = posts.length - 1; i >= 0; i--) {
+                const post = posts[i];
+
+                // Image page (LEFT side in spread)
+                flipbook.append(`
+                    <div class="page">
+                        <div class="page-image-full">
+                            <img src="${post.image}" alt="${post.title}" loading="lazy">
+                            <div class="page-number-overlay">${String(i + 1).padStart(2, '0')}</div>
+                            <div class="platform-badge">${post.platform}</div>
+                        </div>
+                    </div>
+                `);
+
+                // Text page (RIGHT side in spread)
+                flipbook.append(`
+                    <div class="page">
+                        <div class="page-text-full">
+                            <div class="post-title">${post.title}</div>
+                            <div class="post-content">
+                                ${post.text.replace(/\n/g, '<br>')}
+                            </div>
+                            <div class="post-hashtags">${post.hashtags}</div>
+                        </div>
+                    </div>
+                `);
+            }
+
+            // Cover page last (will be the last Turn.js page, where we START viewing)
+            flipbook.append(`
+                <div class="page cover-page">
+                    <div class="cover-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L4 14h5v8l8-12h-5V2z"/>
+                        </svg>
+                        מצב חללית מופעל
+                    </div>
+                    <div class="cover-year">2026</div>
+                    <div class="cover-title">30 פוסטים על קלוד קוד</div>
+                    <div class="cover-subtitle">מדריך מלא לעידן הסוכנים</div>
+                    <div class="cover-cta">לחץ <span>←</span> להתחיל</div>
                 </div>
             `);
         }
@@ -967,21 +971,25 @@ linktr.ee/aviz85
                 }
             });
 
-            updateUI(1);
+            // Start from last page (the cover in Hebrew order)
+            const totalPages = $('#flipbook').turn('pages');
+            $('#flipbook').turn('page', totalPages);
+            updateUI(totalPages);
 
+            // For Hebrew reading: ← (left arrow) = next in reading = turn('next') = flip left page right
             $('#prevBtn').on('click', function() {
-                $('#flipbook').turn('previous');
+                $('#flipbook').turn('next');
             });
 
             $('#nextBtn').on('click', function() {
-                $('#flipbook').turn('next');
+                $('#flipbook').turn('previous');
             });
 
             $(document).on('keydown', function(e) {
                 if (e.key === 'ArrowLeft') {
-                    $('#flipbook').turn('next');
+                    $('#flipbook').turn('next');  // Hebrew next = flip left page right
                 } else if (e.key === 'ArrowRight') {
-                    $('#flipbook').turn('previous');
+                    $('#flipbook').turn('previous');  // Hebrew back = flip right page left
                 }
             });
 
@@ -996,12 +1004,15 @@ linktr.ee/aviz85
         });
 
         function updateUI(page) {
-            // Calculate which post we're on (each post = 2 pages, first page is cover)
-            const postNum = Math.max(1, Math.ceil((page - 1) / 2));
-            $('#currentPost').text(Math.min(postNum, 30));
-
             const totalPages = $('#flipbook').turn('pages');
-            const progress = (page / totalPages) * 100;
+
+            // Hebrew order: cover is last page, posts go backwards
+            // Post number = ceil((totalPages - page) / 2), clamped to 1-30
+            const postNum = Math.ceil((totalPages - page) / 2);
+            $('#currentPost').text(Math.max(1, Math.min(postNum, 30)));
+
+            // Progress: 0% at cover (last page), 100% at back cover (page 1)
+            const progress = ((totalPages - page) / (totalPages - 1)) * 100;
             $('#progressFill').css('width', progress + '%');
         }
 
