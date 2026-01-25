@@ -593,8 +593,8 @@
 
     <!-- Keyboard Hint -->
     <div class="keyboard-hint">
-        <span><span class="key">←</span> הקודם</span>
-        <span><span class="key">→</span> הבא</span>
+        <span><span class="key">←</span> הבא</span>
+        <span><span class="key">→</span> הקודם</span>
     </div>
 
     <!-- Progress Bar -->
@@ -941,7 +941,7 @@ linktr.ee/aviz85
                     <div class="cover-year">2026</div>
                     <div class="cover-title">30 פוסטים על קלוד קוד</div>
                     <div class="cover-subtitle">מדריך מלא לעידן הסוכנים</div>
-                    <div class="cover-cta">לחץ <span>→</span> להתחיל</div>
+                    <div class="cover-cta">לחץ <span>←</span> להתחיל</div>
                 </div>
             `);
         }
@@ -986,10 +986,10 @@ linktr.ee/aviz85
             });
 
             $(document).on('keydown', function(e) {
-                if (e.key === 'ArrowRight') {
-                    $('#flipbook').turn('next');  // Right arrow = forward
-                } else if (e.key === 'ArrowLeft') {
-                    $('#flipbook').turn('previous');  // Left arrow = back
+                if (e.key === 'ArrowLeft') {
+                    $('#flipbook').turn('next');  // Left arrow = forward
+                } else if (e.key === 'ArrowRight') {
+                    $('#flipbook').turn('previous');  // Right arrow = back
                 }
             });
 
