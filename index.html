@@ -532,21 +532,309 @@
 
         @media (max-width: 768px) {
             #flipbook {
-                width: 98vw;
-                height: 140vw;
+                width: 95vw;
+                height: 85vh;
             }
 
             .page-text-full {
-                padding: 25px;
+                padding: 20px;
             }
 
             .page-text-full .post-content {
                 font-size: 0.9rem;
-                line-height: 1.7;
+                line-height: 1.6;
             }
 
             .cover-year {
+                font-size: 3rem;
+            }
+
+            .nav-buttons {
+                bottom: 15px;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+
+            .audio-control {
+                bottom: 15px;
+                right: 15px;
+                padding: 8px 12px;
+            }
+
+            .header {
+                padding: 10px 15px;
+            }
+
+            .logo {
+                font-size: 0.85rem;
+            }
+
+            .page-counter {
+                font-size: 0.75rem;
+            }
+
+            /* Mobile combined page - image top, text bottom */
+            .page-mobile {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .page-mobile .mobile-image {
+                height: 45%;
+                width: 100%;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .page-mobile .mobile-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .page-mobile .mobile-image .page-number-overlay {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-family: 'Orbitron', sans-serif;
+                font-size: 2rem;
+                font-weight: 900;
+                color: var(--neon);
+                text-shadow: 0 0 20px var(--neon-glow), 0 2px 8px rgba(0,0,0,0.8);
+            }
+
+            .page-mobile .mobile-image .platform-badge {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                font-size: 0.65rem;
+                padding: 4px 10px;
+                background: rgba(0, 255, 65, 0.2);
+                backdrop-filter: blur(10px);
+                border: 1px solid var(--neon);
+                border-radius: 100px;
+                color: var(--neon);
+                font-weight: 600;
+            }
+
+            .page-mobile .mobile-text {
+                height: 55%;
+                padding: 15px 20px;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+                background: linear-gradient(135deg, #0d0d0d 0%, #080808 100%);
+            }
+
+            .page-mobile .mobile-text .post-title {
+                font-size: 1.2rem;
+                font-weight: 800;
+                color: var(--neon);
+                margin-bottom: 12px;
+                text-shadow: 0 0 15px var(--neon-glow-soft);
+            }
+
+            .page-mobile .mobile-text .post-content {
+                font-size: 0.85rem;
+                line-height: 1.6;
+                color: var(--text);
+                flex: 1;
+            }
+
+            .page-mobile .mobile-text .post-hashtags {
+                margin-top: 10px;
+                font-size: 0.75rem;
+                color: var(--neon-dim);
+                padding-top: 10px;
+                border-top: 1px solid var(--border);
+            }
+
+            /* Hide desktop-only pages on mobile */
+            .desktop-only {
+                display: none !important;
+            }
+        }
+
+        /* Hide mobile pages on desktop */
+        @media (min-width: 769px) {
+            .mobile-only {
+                display: none !important;
+            }
+        }
+
+        /* Mobile scroll container */
+        .mobile-scroll-container {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-scroll-container {
+                display: block;
+                width: 100%;
+                height: 100vh;
+                overflow-y: auto;
+                scroll-snap-type: y mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .mobile-page {
+                width: 100%;
+                height: 100vh;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                display: flex;
+                flex-direction: column;
+                background: var(--bg);
+            }
+
+            .mobile-page .mobile-image {
+                height: 40vh;
+                width: 100%;
+                overflow: hidden;
+                position: relative;
+                flex-shrink: 0;
+            }
+
+            .mobile-page .mobile-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .mobile-page .mobile-image .page-number-overlay {
+                position: absolute;
+                top: 60px;
+                right: 15px;
+                font-family: 'Orbitron', sans-serif;
+                font-size: 2.5rem;
+                font-weight: 900;
+                color: var(--neon);
+                text-shadow: 0 0 20px var(--neon-glow), 0 2px 8px rgba(0,0,0,0.9);
+            }
+
+            .mobile-page .mobile-image .platform-badge {
+                position: absolute;
+                bottom: 15px;
+                right: 15px;
+                font-size: 0.7rem;
+                padding: 5px 12px;
+                background: rgba(0, 255, 65, 0.25);
+                backdrop-filter: blur(10px);
+                border: 1px solid var(--neon);
+                border-radius: 100px;
+                color: var(--neon);
+                font-weight: 600;
+            }
+
+            .mobile-page .mobile-text {
+                flex: 1;
+                padding: 20px 25px;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+                background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+                border-top: 2px solid var(--neon);
+            }
+
+            .mobile-page .mobile-text .post-title {
+                font-size: 1.4rem;
+                font-weight: 800;
+                color: var(--neon);
+                margin-bottom: 15px;
+                text-shadow: 0 0 15px var(--neon-glow-soft);
+            }
+
+            .mobile-page .mobile-text .post-content {
+                font-size: 1rem;
+                line-height: 1.8;
+                color: var(--text);
+                flex: 1;
+            }
+
+            .mobile-page .mobile-text .post-content strong {
+                color: var(--neon);
+            }
+
+            .mobile-page .mobile-text .post-hashtags {
+                margin-top: 15px;
+                font-size: 0.8rem;
+                color: var(--neon-dim);
+                padding-top: 15px;
+                border-top: 1px solid var(--border);
+            }
+
+            .mobile-page .scroll-hint {
+                text-align: center;
+                padding: 10px;
+                color: var(--text-dim);
+                font-size: 0.75rem;
+            }
+
+            .mobile-page .scroll-hint svg {
+                width: 20px;
+                height: 20px;
+                animation: bounce 2s infinite;
+            }
+
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(5px); }
+            }
+
+            /* Mobile cover */
+            .mobile-cover {
+                height: 100vh;
+                scroll-snap-align: start;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 30px;
+                background: radial-gradient(ellipse at center, #0d0d0d 0%, #030303 100%);
+            }
+
+            .mobile-cover .cover-badge {
+                padding: 8px 18px;
+                font-size: 0.65rem;
+                margin-bottom: 20px;
+            }
+
+            .mobile-cover .cover-year {
                 font-size: 4rem;
+                margin-bottom: 15px;
+            }
+
+            .mobile-cover .cover-title {
+                font-size: 1.5rem;
+                margin-bottom: 8px;
+            }
+
+            .mobile-cover .cover-subtitle {
+                font-size: 1rem;
+                margin-bottom: 30px;
+            }
+
+            .mobile-cover .cover-cta {
+                font-size: 0.9rem;
+            }
+
+            /* Hide nav buttons on mobile */
+            .nav-buttons {
+                display: none;
+            }
+
+            .book-shadow {
+                display: none;
             }
         }
     </style>
@@ -571,10 +859,15 @@
         </div>
     </div>
 
-    <!-- Book -->
-    <div class="book-container">
+    <!-- Book (Desktop) -->
+    <div class="book-container desktop-only">
         <div class="book-shadow"></div>
         <div id="flipbook"></div>
+    </div>
+
+    <!-- Mobile Scroll View -->
+    <div class="mobile-scroll-container mobile-only" id="mobileScroll">
+        <!-- Will be populated by JS -->
     </div>
 
     <!-- Navigation -->
@@ -946,9 +1239,71 @@ linktr.ee/aviz85
             `);
         }
 
-        $(document).ready(function() {
-            generatePages();
+        function generateMobilePages() {
+            const container = $('#mobileScroll');
 
+            // Cover
+            container.append(`
+                <div class="mobile-cover">
+                    <div class="cover-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L4 14h5v8l8-12h-5V2z"/>
+                        </svg>
+                        מצב חללית מופעל
+                    </div>
+                    <div class="cover-year">2026</div>
+                    <div class="cover-title">30 פוסטים על קלוד קוד</div>
+                    <div class="cover-subtitle">מדריך מלא לעידן הסוכנים</div>
+                    <div class="cover-cta">גלול למטה ↓</div>
+                </div>
+            `);
+
+            // Posts in order (1 to 30)
+            posts.forEach((post, i) => {
+                container.append(`
+                    <div class="mobile-page">
+                        <div class="mobile-image">
+                            <img src="${post.image}" alt="${post.title}" loading="lazy">
+                            <div class="page-number-overlay">${String(i + 1).padStart(2, '0')}</div>
+                            <div class="platform-badge">${post.platform}</div>
+                        </div>
+                        <div class="mobile-text">
+                            <div class="post-title">${post.title}</div>
+                            <div class="post-content">
+                                ${post.text.replace(/\n/g, '<br>')}
+                            </div>
+                            <div class="post-hashtags">${post.hashtags}</div>
+                        </div>
+                    </div>
+                `);
+            });
+
+            // Back cover
+            container.append(`
+                <div class="mobile-cover">
+                    <div class="back-logo" style="font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; color: var(--neon); text-shadow: 0 0 30px var(--neon-glow); margin-bottom: 25px;">AVIZ</div>
+                    <div class="back-link" style="font-size: 1.2rem; margin-bottom: 15px;">
+                        <a href="https://linktr.ee/aviz85" target="_blank" style="color: var(--neon); text-decoration: none;">linktr.ee/aviz85</a>
+                    </div>
+                    <div class="back-contact" style="color: var(--text-muted); line-height: 1.8;">
+                        050-397-3736<br>
+                        avizmaeir@gmail.com
+                    </div>
+                    <div class="back-tagline" style="margin-top: 30px; color: var(--text-dim); font-style: italic;">"הסוכנים עובדים. אני מנהל."</div>
+                </div>
+            `);
+        }
+
+        $(document).ready(function() {
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                generateMobilePages();
+            } else {
+                generatePages();
+            }
+
+            if (!isMobile) {
             $('#flipbook').turn({
                 width: 1100,
                 height: 700,
@@ -992,6 +1347,7 @@ linktr.ee/aviz85
                     $('#flipbook').turn('previous');  // Right arrow = back
                 }
             });
+            } // End desktop-only block
 
             $('#audioBtn').on('click', function() {
                 isMuted = !isMuted;
